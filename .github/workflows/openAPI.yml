@@ -1,0 +1,1242 @@
+openapi: '3.0.2'
+info:
+  title: My Wedding Day
+  description: Alta Project 
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://app.swaggerhub.com/apis/Nathannov24/WeddingDay/1.0
+
+tags:
+  - name : Auth
+    description: Authentication
+  - name : Home
+  - name : Users
+  - name : Organizer
+  - name : Package
+  - name : Reservations
+paths:
+####################################
+#   AUTHENTICATION
+####################################
+  /login/users:
+    post:
+      tags:
+        - Auth
+      summary: Get access to account user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestLogin'
+            examples:
+              userData1:
+                description: "Example data user"
+                value: {
+                  email: "alta@alterra.id",
+                  password: "inipassword"
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: success
+                  value: {
+                    id: 1,
+                    message: "Success Login",
+                    name: "a",
+                    role: "user",
+                    status: "success",
+                    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co"
+
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Email & Password Doesn't Match
+                  value: {
+                    code: 400,
+                    status: "failed",
+                    message: "Login Failed. Email and Password incorrect."
+                  }
+  /login/organizer:
+      post:
+        tags:
+          - Auth
+        summary: Get access to account organizer
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/requestLogin'
+              examples:
+                userData1:
+                  description: "Example data user"
+                  value: {
+                    email: "alta@alterra.id",
+                    password: "inipassword"
+                  }
+        responses:
+          '200':
+            description: Success Response
+            content:
+              application/json:
+                examples:
+                  responseData1:
+                    description: success
+                    value: {
+                      id: 1,
+                      message: "Success Login",
+                      name: "a",
+                      role: "organizer",
+                      status: "success",
+                      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co"
+                    }
+          '401':
+            description: Failed Response
+            content:
+              application/json:
+                examples:
+                  responseData1:
+                    description: Email & Password Doesn't Match
+                    value: {
+                      code: 400,
+                      status: "failed",
+                      message: "Login Failed. Email and Password incorrect."
+                    }  
+  ####################################
+  #   HOME
+  #################################### 
+  /:
+    get:
+      tags:
+        - Home
+      summary: Get Home Display
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data user"
+                  value: {
+                    data: [{
+                      PackageID: 1,
+                      ProfileWoID: 1,
+                      PackageName: "Wedding 1 Malam",
+                      Price: 100000000,
+                      Pax: 100,
+                      PackageDesc: "ini adalah paket wedding 1 malam"
+                    },
+                    {
+                      PackageID: 2,
+                      ProfileWoID: 2,
+                      PackageName: "Wedding 2 Malam",
+                      Price: 200000000,
+                      Pax: 200,
+                      PackageDesc: "ini adalah paket wedding 2 malam"
+                    }],
+                    message: "success get package",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Failed Get Package
+                  value: {
+                    message: "Failed Get Package",
+                    status: "Failed"
+                  }
+
+  ####################################
+  #   USER
+  #################################### 
+  /register/users:
+    post:
+      tags:
+        - Users
+      summary: Create Account User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestRegisterUser'
+            examples:
+              userData1:
+                description: "Example data user"
+                value: {
+                  name: "a",
+                  email: "alta@alterra.id",
+                  password: "inipassword",
+                }
+      responses:
+        '201':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: success
+                  value: {
+                    message: "Success Create New User",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Email Has Been Used
+                  value: {
+                    message: "Email was used, try another email",
+                    status: "failed"
+                  }
+  /users/profile:
+    get:
+      tags:
+        - Users
+      summary: Get Profile User
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/requestGetUserByID'
+              examples:
+                userData1:
+                  description: "Example data user"
+                  value: {
+                    data: {
+                      name: "a",
+                      email: "alta@alterra.id",
+                    },
+                    message: "success get user",
+                    status: "success"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Different ID
+                  value: {
+                    message: "Unauthorized Access",
+                    status: "Unauthorized"
+                  }
+    put:
+      tags:
+        - Users
+      summary: Update Account User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestRegisterUser'
+            examples:
+              userData1:
+                description: "Example data user"
+                value: {
+                  name: "a",
+                  email: "alta@alterra.id",
+                  password: "inipasswordyangdiubah"
+                }
+      responses:
+        '201':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: success
+                  value: {
+                    message: "Success update user",
+                    status: "success"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Different ID
+                  value: {
+                    message: "Unauthorized Access",
+                    status: "Unauthorized"
+                  }
+    delete:
+      tags:
+        - Users
+      summary: Get Profile User
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data user"
+                  value: {
+                    message: "success delete user",
+                    status: "success"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Different ID
+                  value: {
+                    message: "Unauthorized Access",
+                    status: "Unauthorized"
+                  }
+  /order/users/my:
+    get:
+      tags:
+        - Users
+      summary: Get List Order
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data users"
+                  value: {
+                    data: [{
+                      ReservationID: 1,
+                      PackageID: 1,
+                      PackageName: "Nikah Muda Asoy",
+                      date: "2021-12-07",
+                      additional: "none",
+                      TotalPax: 1000,
+                      StatusPayment: "not paided"
+                    },
+                    {
+                      ReservationID: 2,
+                      PackageID: 1,
+                      PackageName: "Nikah Muda Asoy",
+                      date: "2021-12-09",
+                      additional: "none",
+                      TotalPax: 1000,
+                      StatusPayment: "not paided"
+                    }
+                    ],
+                    message: "success get order list",
+                    status: "success"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Different ID
+                  value: {
+                    message: "Unauthorized Access",
+                    status: "Unauthorized"
+                  }
+  ####################################
+  #   ORGANIZER
+  #################################### 
+  /register/organizer:
+    post:
+      tags:
+        - Organizer
+      summary: Create Account Organizer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestRegisterOrganizer'
+            examples:
+              userData1:
+                description: "Example data organizer"
+                value: {
+                  WoName: "a",
+                  email: "alta@alterra.id",
+                  PhoneNumber: "12345678",
+                  password: "a",
+                  city: "depok",
+                  address: "Jl. Raya Bedahan, Bedahan, Kec. Sawangan, Kota Depok, Jawa Barat 16519"
+                }
+      responses:
+        '201':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: success
+                  value: {
+                    message: "Success Create New Organizer",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Email Has Been Used
+                  value: {
+                    message: "Email was used, try another email",
+                    status: "failed"
+                  }
+  /organizer/profile:
+    get:
+      tags:
+        - Organizer
+      summary: Get Profile Organizer
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/requestGetOrganizerByID'
+              examples:
+                userData1:
+                  description: "Example data organizer"
+                  value: {
+                    data: {
+                      WoName: "a",
+                      email: "alta@alterra.id",
+                      PhoneNumber: "12345678",
+                      urlweb: "www.iniwebloh.com",
+                      description: "ini web organizer",
+                      city: "depok",
+                      address: "Jl.Bekantan",
+                      status: "Not Actived",
+                      logo: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg"
+                    },
+                    message: "success get user",
+                    status: "success"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Different ID
+                  value: {
+                    message: "Unauthorized Access",
+                    status: "Unauthorized"
+                  }
+    put:
+      tags:
+        - Organizer
+      summary: Update Account Organizer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestRegisterUser'
+            examples:
+              userData1:
+                description: "Example data user"
+                value: {
+                  WoName: "a",
+                  email: "alta@alterra.id",
+                  password: "inipasswordbaru",
+                  PhoneNumber: "12345678",
+                  urlweb: "www.iniwebloh.com",
+                  description: "ini deskripsi baru",
+                  city: "depok",
+                  address: "Jl.Bekantan",
+                  proof: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg",
+                  logo: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg"
+                }
+      responses:
+        '201':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: success
+                  value: {
+                    message: "Success update data organizer",
+                    status: "success"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Different ID
+                  value: {
+                    message: "Unauthorized Access",
+                    status: "Unauthorized"
+                  }
+    delete:
+      tags:
+        - Organizer
+      summary: delete organizer
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data organizer"
+                  value: {
+                    message: "success delete organizer",
+                    status: "success"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Different ID
+                  value: {
+                    message: "Unauthorized Access",
+                    status: "Unauthorized"
+                  }
+  /order/organizer/my:
+    get:
+      tags:
+        - Organizer
+      summary: Get List Order
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data organizer"
+                  value: {
+                    data: [{
+                      ReservationID: 1,
+                      PackageID: 1,
+                      PackageName: "Nikah Muda Asoy",
+                      UserID: 1,
+                      date: "2021-12-07",
+                      additional: "none",
+                      TotalPax: 1000,
+                      StatusPayment: "not paided"
+                    },
+                    {
+                      ReservationID: 2,
+                      PackageID: 1,
+                      PackageName: "Nikah Muda Asoy",
+                      UserID: 2,
+                      date: "2021-12-09",
+                      additional: "none",
+                      TotalPax: 1000,
+                      StatusPayment: "not paided"
+                    }
+                    ],
+                    message: "success get order list",
+                    status: "success"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Different ID
+                  value: {
+                    message: "Unauthorized Access",
+                    status: "Unauthorized"
+                  }                  
+####################################
+#   PACKAGE
+####################################
+  /package:
+    post:
+      tags:
+        - Package
+      summary: Post a Package to Database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestPostPackage'
+            examples:
+              userData1:
+                description: "Example data Package"
+                value: {
+                  PackageName: "Nikah Muda Asoy",
+                  price: "270000000",
+                  pax: "1000",
+                  PackageDesc: "ini cuman package desc kok",
+                  urlphoto: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg"
+                }
+      responses:
+        '201':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    message: "Success create new package",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: failed
+                  value: {
+                    message: "data is already exist",
+                    status: "failed"
+                  }
+    get:
+      tags:
+        - Package
+      summary: Get All Package available in Database
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data package"
+                  value: {
+                    data: [
+                      {
+                        PackageID: 1,
+                        ProfileWoID: 1,
+                        PackageName: "Nikah Muda Asoy",
+                        price: "270000000",
+                        pax: "1000",
+                        PackageDesc: "ini cuman package desc kok",
+                        photo: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg"
+                      },
+                      {
+                        PackageID: 2,
+                        ProfileWoID: 2,
+                        PackageName: "Nikah Muda Asoy euy",
+                        price: "280000000",
+                        pax: "1000",
+                        PackageDesc: "ini cuman package desc kok",
+                        photo: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg"
+                      }
+                    ],
+                    message: "success get package",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: failed
+                  value: {
+                    message: "failed get package",
+                    status: "failed"
+                  }
+  /package/my:
+    get:
+      tags:
+        - Package
+      summary: Get all Package who organizer post
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data package"
+                  value: {
+                    data: [
+                      {
+                        PackageID: 1,
+                        ProfileWoID: 1,
+                        PackageName: "Nikah Muda Asoy",
+                        price: "270000000",
+                        pax: "1000",
+                        PackageDesc: "ini cuman package desc kok",
+                        photo: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg"
+                      },
+                      {
+                        PackageID: 2,
+                        ProfileWoID: 1,
+                        PackageName: "Nikah Muda Asoy Tanpa Pasangan",
+                        price: "170000000",
+                        pax: "1000",
+                        PackageDesc: "ini cuman package desc kok",
+                        photo: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg"
+                      }
+                    ],
+                    message: "success get package",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: failed
+                  value: {
+                    message: "failed get package",
+                    status: "failed"
+                  }
+  /package/:id:
+    get:
+      tags:
+        - Package
+      summary: Get Package by ID
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data package"
+                  value: {
+                    data: {
+                        PackageID: 1,
+                        ProfileWoID: 1,
+                        PackageName: "Nikah Muda Asoy",
+                        price: "270000000",
+                        pax: "1000",
+                        PackageDesc: "ini cuman package desc kok",
+                        photo: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg"
+                      },
+                    message: "success get package",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: failed
+                  value: {
+                    message: "failed get package",
+                    status: "failed"
+                  }
+    put:
+      tags:
+        - Package
+      summary: Update Package
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestPackage'
+            examples:
+              userData1:
+                description: "Example data homestay"
+                value: {
+                  PackageName: "Nikah Muda Asoy",
+                  price: "270000000",
+                  pax: "1000",
+                  PackageDesc: "ini cuman package desc kok",
+                  photo: "https://trello.com/1/cards/61b2121947c45d456109ac16/attachments/61b34d5757f4352a736dff8c/previews/61b34d5857f4352a736e000a/download/wedding_%282%29.jpg"
+                }
+      responses:
+        '201':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: success
+                  value: {
+                    message: "Success edit package",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: missing jwt (token)
+                  value: {
+                    message: "missing or malformed jwt"
+                  }
+    delete:
+      tags:
+        - Package
+      summary: Delete Package By ID
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: success
+                  value: {
+                    message: "success delete package",
+                    status: "success"
+                  }
+        '401':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: failed
+                  value: {
+                    message: "Unauthorized Access",
+                    status: "Unauthorized"
+                  }
+  
+####################################
+#   RESERVATIONS
+####################################
+  /reservations:
+    post:
+      tags:
+        - Reservations
+      summary: Create Reservation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestReserve'
+            examples:
+              userData1:
+                description: "Example data Reservation"
+                value: {
+                  PackageID: 1,
+                  date: "2021-12-07",
+                  additional: "none",
+                  TotalPax: 1000,
+                }
+      responses:
+        '201':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: success
+                  value: {
+                    message: "Success to Reserve",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: failed
+                  value: {
+                    message: "Failed to Reserve",
+                    status: "failed"
+                  }
+    get:
+      tags:
+        - Reservations
+      summary: Get List Reservations History
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data reservation"
+                  value: {
+                    data: [
+                      {
+                        ReservationID: 1,
+                        PackageID: 1,
+                        UserID: 1,
+                        date: "2021-12-07",
+                        additional: "none",
+                        TotalPax: 1000,
+                      },
+                      {
+                        ReservationID: 2,
+                        PackageID: 1,
+                        UserID: 2,
+                        date: "2021-12-09",
+                        additional: "none",
+                        TotalPax: 1000,
+                      },
+                    ],
+                    "message": "success",
+                    "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: failed
+                  value: {
+                    message: "failed get reservations",
+                    status: "failed"
+                  }
+  /reservations/check:
+    post:
+      tags:
+        - Reservations
+      summary: Check Available Package
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestCheckReserve'
+            examples:
+              userData1:
+                description: "Example data Reservation"
+                value: {
+                  PackageID: 1,
+                  date: "2021-12-30",
+                }
+      responses:
+        '201':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Available
+                  value: {
+                    message: "Available",
+                    status: "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: Not Available
+                  value: {
+                    message: "Not Available",
+                    status: "failed"
+                  }
+  /reservations/:id:
+    get:
+      tags:
+        - Reservations
+      summary: Get Reservations Detail By ID
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                userData1:
+                  description: "Example data reservation"
+                  value: {
+                    data: [
+                      {
+                        ReservationID: 1,
+                        PackageID: 1,
+                        PackageName: "Nikah Muda Asoy",
+                        UserID: 1,
+                        date: "2021-12-07",
+                        additional: "none",
+                        TotalPax: 1000,
+                        StatusPayment: "not paided"
+                      },
+                    ],
+                    "message": "success",
+                    "status": "success"
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: failed
+                  value: {
+                    message: "failed get reservations",
+                    status: "failed"
+                  }                   
+
+####################################
+#   COMPONENTS
+####################################
+components:
+  ####################################
+  #   JWT
+  ####################################
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "use Token"
+  ####################################
+  #   SCHEMAS
+  ####################################
+  schemas:
+    requestLogin:
+      type: object
+      properties:
+        "email":
+          type: string
+          minLength: 1
+        "password":
+          type: string
+          minLength: 1
+    requestUserData:
+      type: object
+      properties:
+        "name":
+          type: string
+          minLength: 1
+        "email":
+          type: string
+          minLength: 1
+        "password":
+          type: string
+          minLength: 1
+        "phonenumber":
+          type: string
+          minLength: 1
+        "gender":
+          type: string
+          minLength: 1
+    responseUserData:
+      type: object
+      properties:
+        "id":
+          type: number
+          minLength: 1
+        "name":
+          type: string
+          minLength: 1
+        "email":
+          type: string
+          minLength: 1
+        "phonenumber":
+          type: string
+          minLength: 1
+        "gender":
+          type: string
+          minLength: 1
+    successGetSingleUserResponse:
+      type: object
+      properties: {
+        "code":{
+          type: number
+        },
+        "message": {
+          type: string
+        },
+        "status": {
+          type: string
+        },
+        "data": {
+          type: object
+        }
+      }
+    successGetAllUserResponse:
+      type: object
+      properties: {
+        "code":{
+          type: number
+        },
+        "message": {
+          type: string
+        },
+        "status": {
+          type: string
+        },
+        "data": {
+          type: array,
+          items: {
+            type: object
+          }
+        }
+      }
+    requestRegisterUser:
+      type: object
+      properties: {
+        "name":{
+          type: string
+        },
+        "email":{
+          type: string
+        },
+        "password":{
+          type: string
+        }
+      }
+    
+    requestRegisterOrganizer:
+      type: object
+      properties: {
+        "WoName":{
+          type: string
+        },
+        "email":{
+          type: string
+        },
+        "password":{
+          type: string
+        },
+        "PhoneNumber":{
+          type: string
+        },
+        "city":{
+          type: string
+        },
+        "address":{
+          type: string
+        },
+        "urlweb":{
+          type: string
+        },
+        "description":{
+          type: string
+        },
+        "logo":{
+          type: string
+        }
+      }
+
+    requestGetUserByID:
+      type: object
+      properties: {
+        "data": {
+          type: array,
+          items: {
+            type: object
+          },
+        },
+        "message":{
+          type: string
+        },
+        "status":{
+          type: string
+        }
+      }
+
+    requestGetOrganizerByID:
+      type: object
+      properties: {
+        "data": {
+          type: array,
+          items: {
+            type: object
+          },
+        },
+        "message":{
+          type: string
+        },
+        "status":{
+          type: string
+        }
+      }
+
+    requestPostPackage:
+      type: object
+      properties: {
+        "PackageName":{
+          type: string
+        },
+        "price":{
+          type: integer
+        },
+        "pax":{
+          type: integer
+        },
+        "PackageDesc":{
+          type: string
+        },
+        "urlphoto":{
+          type: string
+        },
+      }
+
+    requestHomestayLatLang:
+      type: object
+      properties: {
+        "data": {
+          type: array,
+          items: {
+            type: object
+          },
+        },
+        "message":{
+          type: string
+        },
+        "status":{
+          type: string
+        }
+      }
+    requestPackage:
+      type: object
+      properties: {
+        "data": {
+          type: array,
+          items: {
+            type: object
+          },
+        }
+      }
+    requestReserve:
+      type: object
+      properties: {
+        "PackageID": {
+          type: integer,
+          minLength: 1
+        },
+        "date": {
+          type: string
+        },
+        "additional": {
+          type: string
+        },
+        "TotalPax": {
+          type: integer
+        },
+      }
+    requestCheckReserve:
+      type: object
+      properties: {
+        "PackageID": {
+          type: integer,
+          minLength: 1
+        },
+        "date": {
+          type: string
+        },
+      }
+    requestFeature:
+      type: object
+      properties:
+        "featurename":
+          type: string
+      
+        

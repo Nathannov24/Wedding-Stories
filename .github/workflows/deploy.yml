@@ -1,0 +1,25 @@
+name: Deploy to EC2 Wedding
+on: 
+  push:
+    branches:
+      - main
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to EC2 using SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd /home/ubuntu/app
+          git pull origin main
+          docker stop wedding-app
+          docker rm wedding-app
+          docker build -t wedding-app:latest .
+          docker run -d -p 80:8000 --name wedding-app wedding-app:latest
